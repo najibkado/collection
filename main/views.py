@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, HttpResponse
+from django.urls import reverse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from .models import Entry
 from rest_framework.parsers import JSONParser
 from .serializers import EntrySerializer
@@ -14,9 +16,28 @@ from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 def index(request):
-    return JsonResponse({
-        "message": "Hello World"
-    })
+    return render(request, "main/index.html")
+
+def login_view(request):
+
+    if request.method == "POST":
+
+        username = request.POST['username']
+        password = request.POST['password']
+        print(username, password)
+
+        user = authenticate(request, username=username, password=password)
+
+        # Check if authentication successful
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return HttpResponseRedirect(reverse("index"))
+
+def logout_view(request):
+    logout(request)
+    return render(request, "main/index.html")
 
 class EntriesApiView(APIView):
     
