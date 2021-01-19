@@ -1,2 +1,4 @@
-rest_framework
+djangorestframework
+markdown 
 python-decouple
+django-filter  
