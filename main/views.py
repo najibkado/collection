@@ -48,18 +48,19 @@ class LoginApiView(APIView):
         username = data.get('username', '')
         password = data.get('password', '')
 
-        print(username, password)
 
         authenticated_user = authenticate(request, username=username, password=password)
+
+        
 
         if authenticated_user is not None:
 
             serializer = UserSerializer(authenticated_user)
             token = Token.objects.get(user=authenticated_user).key
 
-            login(request, authenticated_user)
+            print(serializer.data.keys())
 
-            return Response({'user':serializer.data ,'token': token }, status=status.HTTP_201_CREATED)
+            return Response({ 'user_id': authenticated_user.id, 'user':serializer.data ,'token': token }, status=status.HTTP_201_CREATED)
 
             # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_400_BAD_REQUEST)

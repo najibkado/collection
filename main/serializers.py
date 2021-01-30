@@ -17,8 +17,7 @@ class UserSerializer(serializers.Serializer):
             'username',
             'first_name',
             'last_name',
-            'email',
-            'password'
+            'email'
         ]
 
     def validate(self, attrs):
