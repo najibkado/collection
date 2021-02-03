@@ -41,6 +41,16 @@ def logout_view(request):
     logout(request)
     return render(request, "main/index.html")
 
+class LogoutApiView(APIView):
+
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        logout(request)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
 class LoginApiView(APIView):
 
     def post(self, request):
