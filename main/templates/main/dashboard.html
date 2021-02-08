@@ -1,0 +1,150 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+
+            <!-- Page Content-->
+            <div class="page-content">
+                <div class="container-fluid">
+                    <!-- Page-Title -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="page-title-box">
+                                <div class="row">
+                                    <div class="col">
+                                        <h4 class="page-title">Files</h4>
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="javascript:void(0);">PMV</a></li>
+                                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                                            <li class="breadcrumb-item active">Files</li>
+                                        </ol>
+                                    </div><!--end col-->
+                                    <div class="col-auto align-self-center">
+                                        <!-- <button class="btn btn-outline-primary btn-sm add-file"><i class="fas fa-plus mr-2 "></i>Create File</button> -->
+                                    </div><!--end col-->  
+                                </div><!--end row-->                                                              
+                            </div><!--end page-title-box-->
+                        </div><!--end col-->
+                    </div><!--end row-->
+                    <!-- end page title end breadcrumb -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">                      
+                                            <h4 class="card-title">Files by Users</h4>                      
+                                        </div><!--end col-->
+                                        <div class="col-auto"> 
+                                            <div class="dropdown">
+                                                <a href="#" class="btn btn-sm btn-outline-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <!-- <i class="las la-menu align-self-center text-muted icon-xs"></i>  -->
+                                                    <i class="mdi mdi-dots-horizontal text-muted"></i>
+                                                </a>
+                                                <!-- <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" href="#">Create Folder</a>
+                                                    <a class="dropdown-item" href="#">Delete</a>
+                                                    <a class="dropdown-item" href="#">Settings</a>
+                                                </div> -->
+                                            </div>       
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->                                  
+                                </div><!--end card-header-->
+                                <div class="card-body">
+                                    <div class="files-nav">                                     
+                                        <div class="nav flex-column nav-pills" id="files-tab" aria-orientation="vertical">
+                                            <a class="nav-link active" id="files-projects-tab" href="{% url 'dashboard' %}" aria-selected="true">
+                                               
+                                                <i data-feather="folder" class="align-self-center icon-dual-file icon-sm mr-3"></i>
+                                                <div class="d-inline-block align-self-center">
+                                                    <h5 class="m-0">All Files</h5>
+                                                    <small>Folder</small>                                                    
+                                                </div>
+                                            </a>
+
+                                            {% for user in users %}
+                                            <a class="nav-link" id="files-projects-tab" href="{% url 'dashboard-folder' user.id %}" aria-selected="true">
+                                               
+                                                <i data-feather="folder" class="align-self-center icon-dual-file icon-sm mr-3"></i>
+                                                <div class="d-inline-block align-self-center">
+                                                    <h5 class="m-0">{{user.first_name}} {{user.last_name}}</h5>
+                                                    <small>Folder</small>                                                    
+                                                </div>
+                                            </a>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div><!--end col-->
+
+                        <div class="col-lg-9">
+                            <div class="">                                    
+                                <div class="tab-content" id="files-tabContent">
+                                    
+                                    <div class="tab-pane fade show active" id="files-projects">
+                                        <h4 class="card-title mt-0 mb-3">Files</h4> 
+                                        
+                                        
+                                        <div class="file-box-content">
+                                            {% for entry in entries %}
+                                            <div class="file-box">
+                                                <a href="{% url 'dashboard-file' entry.id %}" class="download-icon-link">
+                                                    <i class="dripicons-preview file-download-icon"></i>
+                                                </a>
+                                                <div class="text-center">
+                                                    <i class="lar la-file-alt text-primary"></i>
+                                                    <h6 class="text-truncate">{{entry.title}}</h6>
+                                                    <small class="text-muted">{{entry.date}}</small>
+                                                </div>                                                        
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        
+                                  
+                                    </div><!--end tab-pane-->
+
+                                </div>  <!--end tab-content-->                                                                              
+                            </div><!--end card-body-->
+                        </div><!--end col-->
+                    </div><!--end row-->
+
+                </div><!-- container -->
+                <div class="modal fade hide-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title mt-0" id="exampleModalLabel">Enter Password</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"><i class="la la-times text-dark"></i></span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="p-3">
+                                    <form class="form-horizontal" action="index.html">
+            
+                                        <div class="text-center mb-4">
+                                            <div class="avatar-box thumb-xl align-self-center mr-2">
+                                                <span class="avatar-title bg-light rounded-circle text-danger"><i class="las la-lock"></i></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="HideCard">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" id="HideCard"><i class="las la-key"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+            </div>
+            <!-- end page content -->
+
+{% endblock %}
+

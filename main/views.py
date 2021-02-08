@@ -14,6 +14,7 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -40,6 +41,51 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return render(request, "main/index.html")
+
+@login_required
+def dashboard_view(request):
+    
+    user = request.user
+
+    if user.is_staff:
+        entries = Entry.objects.all()
+    else:
+        entries = Entry.objects.filter(owner=user)
+
+    users = User.objects.all()
+
+    return render(request, "main/dashboard.html", {
+        "entries": entries,
+        "users": users
+    })
+
+@login_required
+def dashboard_folder_view(request, id):
+
+    try:
+        user = User.objects.get(pk=id)
+    except User.DoesNotExist:
+        return HttpResponse("Folder does not exist")
+
+    entries = Entry.objects.filter(owner=user)
+    users = User.objects.all()
+    
+    return render(request, "main/dashboard.html", {
+        "entries": entries,
+        "users": users
+    })
+
+@login_required
+def dashboard_file_view(request, id):
+    
+    try:
+        entry = Entry.objects.get(pk=id)
+    except Entry.DoesNotExist:
+        return HttpResponse("File does not esist")
+
+    return render(request, "main/file.html", {
+        "entry": entry
+    })
 
 class LogoutApiView(APIView):
 
